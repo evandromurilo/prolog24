@@ -79,6 +79,16 @@ sister(S, C) :-
     female(S),
     sibling(S, C).
 
+uncle(U, C) :-
+    brother(U, F),
+    parent(F, C).
 
+aunt(A, C) :-
+    sister(A, F),
+    parent(F, C).
 
+cousin(A, B) :-
+    sibling(A0, B0),
+    parent(A0, A),
+    parent(B0, B).
 
