@@ -62,3 +62,21 @@ look :-
     list_things(Place),
     write('You can go to:'), nl,
     list_connections(Place).
+
+look_in(Place) :-
+    location(Thing, Place),
+    tab(2),
+    write(Thing),
+    nl,
+    fail.
+
+
+
+
+
+
+
+
+
+
+
