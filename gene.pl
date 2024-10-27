@@ -46,11 +46,38 @@ parent(vania, igor).
 parent(beto, ingrid).
 parent(vania, ingrid).
 
+mother(M, C) :-
+    female(M),
+    parent(M, C).
 
+father(F, C) :-
+    male(F),
+    parent(F, C).
 
+grandmother(G, C) :-
+    female(G),
+    parent(G, M),
+    parent(M, C).
 
+grandfather(G, C) :-
+    male(G),
+    parent(G, M),
+    parent(M, C).
 
+sibling(S, C) :- % mesmo mae e pai só para não duplicar
+    father(F, S),
+    father(F, C),
+    mother(M, S),
+    mother(M, C),
+    C \= S.
 
+brother(B, C) :-
+    male(B),
+    sibling(B, C).
+
+sister(S, C) :-
+    female(S),
+    sibling(S, C).
 
 
 
