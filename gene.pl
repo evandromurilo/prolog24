@@ -17,6 +17,12 @@ female(ingrid).
 male(beto).
 female(vania).
 
+spouse(murilo, iana).
+spouse(irvandro, iana).
+spouse(ivo, edinalva).
+spouse(dietwald, arcenia).
+spouse(beto, vania).
+
 parent(arcenia, iara).
 parent(dietwald, iara).
 parent(arcenia, beto).
@@ -83,8 +89,18 @@ uncle(U, C) :-
     brother(U, F),
     parent(F, C).
 
+uncle(U, C) :-
+    married(U, A),
+    sister(A, P),
+    parent(P, C).
+
 aunt(A, C) :-
     sister(A, F),
+    parent(F, C).
+
+aunt(A, C) :-
+    married(A, U),
+    brother(U, F),
     parent(F, C).
 
 cousin(A, B) :-
@@ -92,3 +108,5 @@ cousin(A, B) :-
     parent(A0, A),
     parent(B0, B).
 
+married(A, B) :- spouse(A, B).
+married(A, B) :- spouse(B, A).
