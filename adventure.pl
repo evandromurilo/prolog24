@@ -4,7 +4,6 @@ room(hall).
 room('dining room').
 room(cellar).
 
-
 location(desk, office).
 location(apple, kitchen).
 location(flashlight, desk).
@@ -36,3 +35,30 @@ where_food(X,Y) :-
 where_food(X,Y) :-
     location(X,Y),
     tastes_yuchy(X).
+
+connect(X,Y) :- door(X,Y).
+connect(X,Y) :- door(Y,X).
+
+list_things(Place) :-
+    location(X,Place),
+    tab(2),
+    write(X),
+    nl,
+    fail.
+list_things(_). % so it succeeds in the end
+
+list_connections(Place) :-
+    connect(X, Place),
+    tab(2),
+    write(X),
+    nl,
+    fail.
+list_connections(_).
+
+look :-
+    here(Place),
+    write('You are in the '), write(Place), nl,
+    write('You can see:'), nl,
+    list_things(Place),
+    write('You can go to:'), nl,
+    list_connections(Place).
