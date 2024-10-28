@@ -60,15 +60,21 @@ father(F, C) :-
     male(F),
     parent(F, C).
 
+grandchild(C, G) :-
+    parent(P, C),
+    parent(G, P).
+
+grandparent(G, C) :-
+    parent(G, P),
+    parent(P, C).
+
 grandmother(G, C) :-
     female(G),
-    parent(G, M),
-    parent(M, C).
+    grandparent(G, C).
 
 grandfather(G, C) :-
     male(G),
-    parent(G, M),
-    parent(M, C).
+    grandparent(G, C).
 
 sibling(S, C) :- % mesmo mae e pai só para não duplicar
     father(F, S),
