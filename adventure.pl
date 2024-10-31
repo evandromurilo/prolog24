@@ -107,6 +107,16 @@ take_object(X) :-
     write('taken'),
     nl.
 
+drop(Thing) :-
+    have(Thing),
+    here(Location),
+    retract(have(Thing)),
+    asserta(location(Thing, Location)).
+
+drop(Thing) :-
+    write('You don''t have '), write(Thing),nl,fail.
+
+
 
 
 
