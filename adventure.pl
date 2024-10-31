@@ -4,6 +4,7 @@ room(hall).
 room('dining room').
 room(cellar).
 
+:- dynamic location/2.
 location(desk, office).
 location(apple, kitchen).
 location(flashlight, desk).
@@ -26,6 +27,7 @@ tastes_yuchy(broccoli).
 
 turned_off(flashlight).
 
+:- dynamic here/1.
 here(kitchen).
 
 where_food(X,Y) :-
@@ -70,9 +72,40 @@ look_in(Place) :-
     nl,
     fail.
 
+goto(Place) :-
+    can_go(Place),
+    move(Place),
+    look.
 
+can_go(Place) :-
+    here(X),
+    connect(X, Place).
 
+can_go(_Place) :-
+    write('You can''t get there from here.'), nl,
+    fail.
 
+move(Place) :-
+    retract(here(_X)),
+    asserta(here(Place)).
+
+take(X) :-
+    can_take(X),
+    take_object(X).
+
+can_take(X) :-
+    here(Y),
+    location(X, Y).
+can_take(X) :-
+    write('There is no '), write(X),
+    write(' here'),
+    nl, fail.
+
+take_object(X) :-
+    retract(location(X, _)),
+    asserta(have(X)),
+    write('taken'),
+    nl.
 
 
 
