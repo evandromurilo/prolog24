@@ -25,6 +25,7 @@ edible(crackers).
 
 tastes_yuchy(broccoli).
 
+:- dynamic turned_off/1.
 turned_off(flashlight).
 
 :- dynamic here/1.
@@ -116,10 +117,28 @@ drop(Thing) :-
 drop(Thing) :-
     write('You don''t have '), write(Thing),nl,fail.
 
+inventory() :-
+    write('You have:'),nl,
+    have(Thing),
+    tab(2), write(Thing),nl,
+    fail.
 
+turn_on(Thing) :-
+    turned_off(Thing),
+    retract(turned_off(Thing)),
+    asserta(turned_on(Thing)),
+    write(Thing), write(' is now on'), nl.
 
+turn_on(Thing) :-
+    write(Thing), write(' is not turned off!'), nl.
 
+turn_off(Thing) :-
+    turned_on(Thing),
+    retract(turned_on(Thing)),
+    asserta(turned_off(Thing)),
+    write(Thing), write(' is now off'), nl.
 
-
+turn_off(Thing) :-
+    write(Thing), write(' is not turned on!'), nl.
 
 
