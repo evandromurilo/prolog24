@@ -14,11 +14,12 @@ location(broccoli, kitchen).
 location(crackers, kitchen).
 location(computer, office).
 
-door(office, hall).
-door(kitchen, office).
-door(hall, 'dining room').
-door(kitchen, cellar).
-door('dining room', kitchen).
+:- dynamic door/3.
+door(office, hall, open).
+door(kitchen, office, open).
+door(hall, 'dining room', open).
+door(kitchen, cellar, closed).
+door('dining room', kitchen, closed).
 
 edible(apple).
 edible(crackers).
@@ -39,8 +40,8 @@ where_food(X,Y) :-
     location(X,Y),
     tastes_yuchy(X).
 
-connect(X,Y) :- door(X,Y).
-connect(X,Y) :- door(Y,X).
+connect(X,Y) :- door(X,Y,_Z).
+connect(X,Y) :- door(Y,X,_Z).
 
 list_things(Place) :-
     location(X,Place),
@@ -78,10 +79,24 @@ goto(Place) :-
     move(Place),
     look.
 
+is_open(X, Y) :-
+    door(X, Y, open).
+is_open(X, Y) :-
+    door(Y, X, open).
+
+is_closed(X, Y) :-
+    door(X, Y, closed).
+is_closed(X, Y) :-
+    door(Y, X, closed).
+
 can_go(Place) :-
     here(X),
-    connect(X, Place).
-
+    is_open(X, Place).
+can_go(Place) :-
+    here(X),
+    is_closed(X, Place),
+    write('Such door is closed.'), nl,
+    fail.
 can_go(_Place) :-
     write('You can''t get there from here.'), nl,
     fail.
@@ -130,7 +145,7 @@ turn_on(Thing) :-
     write(Thing), write(' is now on'), nl.
 
 turn_on(Thing) :-
-    write(Thing), write(' is not turned off!'), nl.
+    write(Thing), write(' is not turned off!'), nl, fail.
 
 turn_off(Thing) :-
     turned_on(Thing),
@@ -139,6 +154,54 @@ turn_off(Thing) :-
     write(Thing), write(' is now off'), nl.
 
 turn_off(Thing) :-
-    write(Thing), write(' is not turned on!'), nl.
+    write(Thing), write(' is not turned on!'), nl, fail.
+
+open_door(Location) :-
+    here(Here),
+    door(Location, Here, Status),
+    retract(door(Location, Here, Status)),
+    asserta(door(Location, Here, open)),
+    write('Door opened'), nl.
+open_door(Location) :-
+    here(Here),
+    door(Here, Location, Status),
+    retract(door(Here, Location, Status)),
+    asserta(door(Here, Location, open)),
+    write('Door opened'), nl.
+open_door(_X, _Y) :-
+    write('You are not seeing such door'),
+    fail.
+
+close_door(Location) :-
+    here(Here),
+    door(Location, Here, Status),
+    retract(door(Location, Here, Status)),
+    asserta(door(Location, Here, closed)),
+    write('Door closed'), nl.
+close_door(Location) :-
+    here(Here),
+    door(Here, Location, Status),
+    retract(door(Here, Location, Status)),
+    asserta(door(Here, Location, closed)),
+    write('Door closed'), nl.
+close_door(_X, _Y) :-
+    write('You are not seeing such door'),
+    fail.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
