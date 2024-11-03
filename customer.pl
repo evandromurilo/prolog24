@@ -37,3 +37,19 @@ update_inventory(Item, Quantity) :-
     retract(inventory(Code, OldQ)),
     NewQ is OldQ + Quantity,
     asserta(inventory(Code, NewQ)).
+
+order() :-
+    write('Enter customer name: '), read(C),
+    write('Enter item name: '), read(I),
+    write('Enter quantity: '), read(Q),
+    valid_order(C, I, Q),
+    asserta(order(C, I, Q)),
+    QuantityUpdate is -Q,
+    update_inventory(Item, QuantityUpdate),
+    write('Order placed.'), nl,
+    check_reorder(Item).
+
+check_reorder(Item) :-
+    reorder(Item).
+check_reorder(_X) :-
+    true.
