@@ -4,6 +4,7 @@ customer(julio, nyc, bbb).
 item(1, coke, 10).
 item(2, rice, 5).
 
+:- dynamic inventory/2.
 inventory(1, 30).
 inventory(2, 2).
 
@@ -30,3 +31,9 @@ valid_order(Customer, Item, Quantity) :-
     good_customer(Customer),
     item_quantity(Item, InStock),
     Quantity =< InStock.
+
+update_inventory(Item, Quantity) :-
+    item(Code, Item, _X),
+    retract(inventory(Code, OldQ)),
+    NewQ is OldQ + Quantity,
+    asserta(inventory(Code, NewQ)).
