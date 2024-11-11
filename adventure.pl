@@ -13,6 +13,9 @@ location(nani, 'washing machine').
 location(broccoli, kitchen).
 location(crackers, kitchen).
 location(computer, office).
+location(envelope, desk).
+location(stamp, envelope).
+location(key, envelope).
 
 :- dynamic door/3.
 door(office, hall, open).
@@ -188,7 +191,11 @@ close_door(_X, _Y) :-
     write('You are not seeing such door'),
     fail.
 
-
+is_contained_in(Thing, Place) :-
+    location(Thing, Place).
+is_contained_in(Thing, Place) :-
+    location(OtherPlace, Place),
+    is_contained_in(Thing, OtherPlace).
 
 
 
