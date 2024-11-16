@@ -116,3 +116,15 @@ cousin(A, B) :-
 
 married(A, B) :- spouse(A, B).
 married(A, B) :- spouse(B, A).
+
+ancestor(P, C) :-
+    parent(P, C).
+ancestor(P, C) :-
+    parent(P, X),
+    ancestor(X, C).
+
+descendent(D, A) :-
+    parent(A, D).
+descendent(D, A) :-
+    parent(X, D),
+    descendent(X, A).

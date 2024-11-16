@@ -196,19 +196,3 @@ is_contained_in(Thing, Place) :-
 is_contained_in(Thing, Place) :-
     location(OtherPlace, Place),
     is_contained_in(Thing, OtherPlace).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
