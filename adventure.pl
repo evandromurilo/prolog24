@@ -196,3 +196,50 @@ is_contained_in(Thing, Place) :-
 is_contained_in(Thing, Place) :-
     location(OtherPlace, Place),
     is_contained_in(Thing, OtherPlace).
+
+
+
+
+
+
+object(candle,red,small,1).
+object(apple,red,small,1).
+object(apple,green,small,1).
+object(table,blue,big,50).
+
+location_s(object(candle,red,small,1), kitchen).
+location_s(object(apple,red,small,1), kitchen).
+location_s(object(apple,green,small,1), kitchen).
+location_s(object(table,blue,big,50), kitchen).
+
+can_take_s(Thing) :-
+    here(Room),
+    location_s(object(Thing,_,small,_), Room).
+can_take_s(Thing) :-
+    here(Room),
+    location_s(object(Thing,_,big,_),Room),
+    write('The '), write(Thing),
+    write(' is too big to carry.'), nl,
+    fail.
+can_take_s(Thing) :-
+    here(Room),
+    not(location_s(object(Thing,_,_,_), Room)),
+    write('There is no '), write(Thing),
+    write(' here'), nl,
+    fail.
+
+
+list_things_s(Place) :-
+    location_s(object(Thing,Color,Size,Weight),Place),
+    write('A '),write(Size),tab(1),
+    write(Color),tab(1),
+    write(Thing),write(', weighting '),
+    write_weight(Weight), nl,
+    fail.
+list_things_s(_).
+
+write_weight(1) :-
+    write('1 pound').
+write_weight(W) :-
+    W > 1,
+    write(W), write(' pounds').
